@@ -1,0 +1,21 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t awijaya/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run awijaya/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t awijaya/multi-client ./client
+  - docker build -t awijaya/multi-server ./server
+  - docker build -t awijaya/multi-worker ./worker
+  - docker build -t awijaya/multi-nginx ./nginx
+  # Take the images and push to docker hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push awijaya/multi-client 
+  - docker push awijaya/multi-nginx 
+  - docker push awijaya/multi-server 
+  - docker push awijaya/multi-worker
