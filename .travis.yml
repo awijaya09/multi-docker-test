@@ -23,7 +23,7 @@ after_success:
 deploy:
   provider: elasticbeanstalk
   region: ap-southeast-2
-  app: multi-docker
+  app: multi-docker-testing
   env: MultiDockerTesting-env
   bucket_name: elasticbeanstalk-ap-southeast-2-095178253473
   bucket_path: multi-docker
